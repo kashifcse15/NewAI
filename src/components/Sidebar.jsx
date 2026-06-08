@@ -3,6 +3,7 @@ import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
 import darklogo from "../assets/dark.jpeg"
 import lightlogo from "../assets/light.jpeg"
+import {LuImage,LuCoins} from "react-icons/lu"
 
 const Sidebar = () => {
   const { user, chats, selectedChat, theme, setTheme, navigate } = useAppContext();
@@ -72,6 +73,26 @@ const Sidebar = () => {
   ))
 } 
 </div> */}
+
+<div className='mt-auto flex flex-col gap-3'>
+<button onClick={() => navigate('/community')} className='flex items-center gap-3 p-3 rounded-xl
+ border border-gray-200 bg-white hover:bg-gray-50 hover:shadow-md transition-all duration-300 cursor-pointer'>
+  <LuImage className='text-2xl text-green-500' />
+  <div className='text-left'>
+    <p className='font-medium text-gray-800'>Community Images</p>
+    <p className='text-sm text-gray-500'>Explore AI creations</p>
+  </div>
+</button>
+
+<button onClick={() => navigate('/credits')} className='mt-auto flex items-center gap-3 p-3 rounded-xl
+ border border-gray-200 bg-white hover:bg-gray-50 hover:shadow-md transition-all duration-300 cursor-pointer'>
+  <LuCoins className='text-2xl text-green-500' />
+  <div className='text-left'>
+    <p className='font-medium text-gray-800'>Credits : {user?.credits}</p>
+    <p className='text-sm text-gray-500'>Purchase Credits</p>
+  </div>
+</button>
+</div>
 
 </div>
   )
