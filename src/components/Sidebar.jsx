@@ -3,7 +3,7 @@ import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
 import darklogo from "../assets/dark.jpeg"
 import lightlogo from "../assets/light.jpeg"
-import {LuImage,LuCoins} from "react-icons/lu"
+import {LuImage,LuCoins,LuMoon} from "react-icons/lu"
 
 const Sidebar = () => {
   const { user, chats, selectedChat, theme, setTheme, navigate } = useAppContext();
@@ -92,6 +92,30 @@ const Sidebar = () => {
     <p className='text-sm text-gray-500'>Purchase Credits</p>
   </div>
 </button>
+
+<div className='flex items-center justify-between p-3 mt-4 rounded-xl border border-gray-200 bg-white hover:shadow-md transition-all duration-300'>
+
+  <div className='flex items-center gap-2 text-sm font-medium text-gray-700'>
+    <LuMoon className='text-xl text-green-500' />
+    <p>Dark Mode</p>
+  </div>
+
+  <label className='relative inline-flex cursor-pointer'>
+
+    <input
+      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+      type='checkbox'
+      className='sr-only peer'
+      checked={theme === 'dark'}
+    />
+
+    <div className='w-11 h-6 bg-gray-300 rounded-full peer-checked:bg-green-500 transition-all duration-300'></div>
+
+    <span className='absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5'></span>
+
+  </label>
+
+</div>
 </div>
 
 </div>
