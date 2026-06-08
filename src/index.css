@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Archivo:ital,wght@0,100..900;1,100..900&family=Bungee&family=Iosevka+Charon:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
 @import "tailwindcss";
 
-@custom-variant dark (&:is(.dark, [data-theme="dark"]));
+@custom-variant dark (&:where(.dark, .dark *));
 *{
   font-family: 'Archivo', sans-serif;
 }
