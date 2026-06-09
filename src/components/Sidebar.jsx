@@ -3,40 +3,43 @@ import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
 import darklogo from "../assets/dark.jpeg"
 import lightlogo from "../assets/light.jpeg"
+import { assets } from '../assets/assets/assets';
 import { LuImage, LuCoins, LuMoon, LuUser, LuLogOut, LuX } from "react-icons/lu"
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   const { user, chats, selectedChat, theme, setTheme, navigate } = useAppContext();
   const [search, setSearch] = useState('');
-  return (
-    <div
+  return ( 
+    <div  // Main SideBar
       className={` top-0 left-0 z-50
   flex flex-col w-72 h-screen p-5 overflow-y-auto bg-white dark:bg-[#111] border border-green-100
   rounded-none md:rounded-3xl shadow-xl shadow-green-100/40 transition-transform duration-300
   ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:m-4 md:h-[95vh]`}
     >
       <img
-        src={lightlogo}
+        src={lightlogo}  //logo at top
         alt=''
         className='w-28 mx-auto mt-4 mb-10 rounded-2xl'
       />
-
-      <button onClick={()=>{setIsMenuOpen(false)}}
+      <button onClick={() => { setIsMenuOpen(false) }} // NEW CHAT BUTTON
         className="w-full flex items-center justify-center gap-2 text-white bg-linear-to-br from-green-400 to-blue-600 rounded-xl p-4 font-medium transition-all duration-200 hover:scale-105 cursor-pointer"
       >
         <span className="text-xl">+</span>
         <span>New Chat</span>
       </button>
 
-      <div className="relative">
+      <div className="relative"> {/* SEARCH */}
         <input
           type="text" id="search" placeholder=" " onChange={(e) => setSearch(e.target.value)}
-          className="peer w-full h-12 px-4 pr-12 text-sm text-slate-900 dark:text-white bg-white dark:bg-[#181818] border border-slate-300 dark:border-white/10 rounded-lg outline-none transition-all duration-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 relative mt-6"
+          className="peer w-full h-12 px-4 pr-12 text-sm text-slate-900 dark:text-white
+           bg-white dark:bg-[#181818] border border-slate-300 dark:border-white/10 rounded-lg outline-none
+            transition-all duration-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 relative mt-6"
         />
 
         <label
           htmlFor="search"
-          className="absolute left-3 top-3 bg-white dark:bg-[#181818] px-1 text-slate-500 dark:text-slate-100 transition-all duration-200 pointer-events-none peer-focus:text-green-600"
+          className="absolute left-3 top-3 bg-white dark:bg-[#181818] px-1 text-slate-500 dark:text-slate-100
+           transition-all duration-200 pointer-events-none peer-focus:text-green-600"
         >
           Search Chats...
         </label>
@@ -56,7 +59,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         </div>
       </div>
 
-      {/* {chats.length>0 && <p className='mt-4 text-sm'>Recent Chats</p>}
+      {chats.length>0 && <p className='mt-4 text-sm'>Recent Chats</p>} 
 <div>
 {
   chats.filter((chat)=>chat.messages[0] ? chat.messages[0].content.toLowerCase().
@@ -72,15 +75,17 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         <p className='text-xs text-gray-500 dark:text-[#B1A6C0]'>
           {chat.updatedAt}
         </p>
+        <img src={assets.bin_icon} className='hidden group-hover:block w-4
+        cursor-pointer not-dark:invert ' alt="" />
       </div>
     </div>
   ))
 } 
-</div> */}
+</div>
+{/* COMMUNITY */}
+      <div className='mt-auto flex flex-col gap-3'> 
 
-      <div className='mt-auto flex flex-col gap-3'>
-
-        <button onClick={() => {navigate('/community'); setIsMenuOpen(false)}} className='flex items-center gap-3 p-3 rounded-xl 
+        <button onClick={() => { navigate('/community'); setIsMenuOpen(false) }} className='flex items-center gap-3 p-3 rounded-xl 
 bg-white dark:bg-[#181818]  border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white
  hover:bg-gray-50 dark:hover:bg-[#222] hover:shadow-md transition-all duration-300 cursor-pointer'>
           <LuImage className='text-2xl text-green-500' />
@@ -89,8 +94,8 @@ bg-white dark:bg-[#181818]  border border-gray-200 dark:border-white/10 text-gra
             <p className='text-sm text-gray-500'>Explore AI creations</p>
           </div>
         </button>
-
-        <button onClick={() => {navigate('/credits'); setIsMenuOpen(false)}} className='mt-auto flex items-center gap-3 p-3 rounded-xl
+{/* CREDITS */}
+        <button onClick={() => { navigate('/credits'); setIsMenuOpen(false) }} className='mt-auto flex items-center gap-3 p-3 rounded-xl
  bg-white dark:bg-[#181818] border border-gray-200 dark:border-white/10
   hover:bg-gray-50 dark:hover:bg-[#222]  hover:shadow-md transition-all duration-300 cursor-pointer'>
           <LuCoins className='text-2xl text-green-500' />
@@ -99,7 +104,7 @@ bg-white dark:bg-[#181818]  border border-gray-200 dark:border-white/10 text-gra
             <p className='text-sm text-gray-500'>Purchase Credits</p>
           </div>
         </button>
-
+{/* DARK MODE */}
         <div className='flex items-center justify-between p-3 mt-4 rounded-xl border border-gray-200 dark:border-white/10
 bg-white dark:bg-[#181818] text-gray-700 dark:text-white hover:shadow-md transition-all duration-300'>
           <div className='flex items-center gap-2 text-sm font-medium '>
@@ -115,7 +120,7 @@ bg-white dark:bg-[#181818] text-gray-700 dark:text-white hover:shadow-md transit
             <span className='absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5'></span>
           </label>
         </div>
-
+{/* LOGOUT & USERNAME */}
         <button className='mt-auto w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-white dark:bg-[#181818] 
 border border-gray-200 dark:border-white hover:bg-gray-50 dark:hover:bg-[#222] transition-all duration-300 '>
           <div className='flex items-center gap-3'>
@@ -129,6 +134,7 @@ border border-gray-200 dark:border-white hover:bg-gray-50 dark:hover:bg-[#222] t
 
 
       </div>
+{/* X BUTTON FOR MOBILE      */}
       <button onClick={() => setIsMenuOpen(false)} className='md:hidden absolute top-3 right-3 w-5 h-5 cursor-pointer'>
         <LuX className='text-3xl text-red-500' />
       </button>
@@ -138,3 +144,4 @@ border border-gray-200 dark:border-white hover:bg-gray-50 dark:hover:bg-[#222] t
 }
 
 export default Sidebar
+

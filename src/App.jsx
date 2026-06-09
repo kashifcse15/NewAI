@@ -5,6 +5,8 @@ import ChatBox from './components/ChatBox'
 import Credits from './pages/Credits'
 import Community from './pages/Community'
 import { LuMenu } from 'react-icons/lu'
+import { assets } from './assets/assets/assets'
+import './assets/assets/prism.css'
 
 const App = () => { // gradient
     const [isMenuOpen, setIsMenuOpen] = useState(null);

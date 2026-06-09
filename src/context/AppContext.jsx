@@ -1,9 +1,8 @@
 import { createContext, useContext } from "react";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { dummyUserData, dummyChats } from "../assets/assets/assets"
 
-const dummyUser = { name: "User", id: "1" };
-const dummyChats = [{ id: "1", title: "New Chat" }];
 
 const AppContext = createContext();
 export const AppContextProvider = ({ children }) => {
@@ -15,13 +14,24 @@ export const AppContextProvider = ({ children }) => {
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
 
     const fetchUser = async () => {
-        setUser(dummyUser); // we don't have a real user yet
+        setUser(dummyUserData); // we don't have a real user yet
     }
 
     const fetchUserChats = async () => {
         setChats(dummyChats);
-        setSelectedChat(dummyChats[0]);
+        setSelectedChat(dummyChats[1]);
     };
+
+    useEffect(() => {
+        localStorage.setItem('theme', theme);
+        if (theme === 'dark') {
+            document.documentElement.classList.add('dark');
+        }
+        else {
+            document.documentElement.classList.remove('dark');
+        }
+
+    }, [theme]);
 
     useEffect(() => {
         if (user) {
@@ -33,30 +43,19 @@ export const AppContextProvider = ({ children }) => {
         }
     }, [user]);
 
+
     useEffect(() => {
-        localStorage.setItem('theme',theme);    
-        if (theme === 'dark') {
-            document.documentElement.classList.add('dark');
-        }
-        else {
-            document.documentElement.classList.remove('dark');
-        }
-    
-    }, [theme]);
+        fetchUser();
+    }, [])
 
-
-useEffect(() => {
-    fetchUser();
-}, [])
-
-const value = {
-    user, chats, selectedChat, theme, setTheme, fetchUser,
-    setSelectedChat, setChats, navigate,
-}
-return (
-    <AppContext.Provider value={value}>
-        {children}
-    </AppContext.Provider>
-)
+    const value = {
+        user, chats, selectedChat, theme, setTheme, fetchUser,
+        setSelectedChat, setChats, navigate,
+    }
+    return (
+        <AppContext.Provider value={value}>
+            {children}
+        </AppContext.Provider>
+    )
 }
 export const useAppContext = () => useContext(AppContext);
