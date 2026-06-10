@@ -7,7 +7,7 @@ import { assets } from '../assets/assets/assets';
 import { LuImage, LuCoins, LuMoon, LuUser, LuLogOut, LuX } from "react-icons/lu"
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
-  const { user, chats, selectedChat, theme, setTheme, navigate } = useAppContext();
+  const { user, chats, selectedChat, theme, setTheme, navigate, setSelectedChat } = useAppContext();
   const [search, setSearch] = useState('');
   return ( 
     <div  // Main SideBar
@@ -65,7 +65,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   chats.filter((chat)=>chat.messages[0] ? chat.messages[0].content.toLowerCase().
   includes(search.toLowerCase()) : chat.name.toLowerCase().
   includes(search.toLowerCase())).map((chat)=>(
-    <div key={chat._id} className='p-2 px-4 dark:bg-[#57317c]/10 border
+    <div key={chat._id} onClick={() => setSelectedChat(chat)} className='p-2 px-4 dark:bg-[#57317c]/10 border
     border-gray-300 dark:border-[#80609F]/15 rounded-md cursor-pointer
     flex justify-between group'>
       <div>
