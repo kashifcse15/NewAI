@@ -16,8 +16,8 @@ export default function Login() {
           alt="Abstract AI figure"
           className="w-full h-full object-cover object-top"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-[#080f0a]" />
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-black/50" />
+        <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-[#080f0a]" />
+        <div className="absolute inset-0 bg-linear-to-b from-transparent via-transparent to-black/50" />
 
         {/* Badge */}
         <div className="absolute top-7 left-7 flex items-center gap-2 bg-black/40 backdrop-blur-md border border-green-400/25 rounded-full px-4 py-2">
@@ -40,7 +40,7 @@ export default function Login() {
           </p>
 
           {/* Google Button */}
-          <button className="flex items-center justify-center w-full py-3 rounded-xl border border-green-400/20 bg-white/[0.04] text-green-100 text-sm font-medium hover:bg-white/10 transition-colors mb-5 cursor-pointer">
+          <button className="flex items-center justify-center w-full py-3 rounded-xl border border-green-400/20 bg-white/4 text-green-100 text-sm font-medium hover:bg-white/10 transition-colors mb-5 cursor-pointer">
             <GoogleIcon />
             Google
           </button>
@@ -53,7 +53,7 @@ export default function Login() {
           </div>
 
           {/* Email */}
-          <div className="flex items-center gap-3 bg-white/[0.04] border border-green-400/15 rounded-xl px-4 py-3 mb-3 focus-within:border-green-400/50 transition-colors">
+          <div className="flex items-center gap-3 bg-white/4 border border-green-400/15 rounded-xl px-4 py-3 mb-3 focus-within:border-green-400/50 transition-colors">
             <MailIcon />
             <input
               type="email"
@@ -65,7 +65,7 @@ export default function Login() {
           </div>
 
           {/* Password */}
-          <div className="flex items-center gap-3 bg-white/[0.04] border border-green-400/15 rounded-xl px-4 py-3 mb-4 focus-within:border-green-400/50 transition-colors">
+          <div className="flex items-center gap-3 bg-white/4 border border-green-400/15 rounded-xl px-4 py-3 mb-4 focus-within:border-green-400/50 transition-colors">
             <LockIcon />
             <input
               type="password"
@@ -93,7 +93,7 @@ export default function Login() {
           </div>
 
           {/* Login Button */}
-          <button className="w-full py-3.5 rounded-xl bg-gradient-to-br from-green-500 to-green-700 text-white text-base font-semibold shadow-[0_4px_24px_rgba(34,197,94,0.35)] hover:opacity-90 transition-opacity mb-5 cursor-pointer">
+          <button className="w-full py-3.5 rounded-xl bg-linear-to-br from-green-500 to-green-700 text-white text-base font-semibold shadow-[0_4px_24px_rgba(34,197,94,0.35)] hover:opacity-90 transition-opacity mb-5 cursor-pointer">
             Login
           </button>
 
