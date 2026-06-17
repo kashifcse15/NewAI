@@ -1,5 +1,6 @@
-import User from "../models/User";
+import User from "../models/User.js";
 import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs';
 
 const generateToken=(id)=>{
     return jwt.sign({id},process.env.JWT_SECRET, {
@@ -7,7 +8,7 @@ const generateToken=(id)=>{
     });
 }
 
-export const registeruser = async (req,res) =>{ // API to register User
+export const registerUser = async (req,res) =>{ // API to register User
     const {name,email,password} = req.body;
 
     try{
