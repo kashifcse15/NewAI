@@ -50,3 +50,4 @@ export const getUser=async (req,res)=>{ //API to get User data
         return res.json({success:false, message:error.message});
     }
 }
+
