@@ -10,18 +10,20 @@ import './assets/assets/prism.css'
 import Loading from './pages/Loading'
 import Login from './pages/Login'
 import { useAppContext } from './context/AppContext'
+import {Toaster} from 'react-hot-toast';
 
 const App = () => { // gradient
 
-    const {user} = useAppContext();
+    const {user, loadingUser} = useAppContext();
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const {pathname} = useLocation();
 
-    if(pathname === '/loading'){
+    if(pathname === '/loading' || loadingUser){
         return <Loading />
     }
     return (
         <> 
+        <Toaster />
         {!isMenuOpen && <LuMenu className='absolute top-3 left-3 w-8 h-8 cursor-pointer 
         md:hidden not-dark:invert text-fuchsia-50' onClick={()=>setIsMenuOpen(true)}/>}
         {user ? (
@@ -37,7 +39,7 @@ const App = () => { // gradient
             </div>
         </div>
         ) : (
-            <div className='bg-gradient-to-b from-[#242124] to-[#000000] h-screen w-screen flex items-center justify-center'>
+            <div className='bg-linear-to-b from-[#242124] to-[#000000] h-screen w-screen flex items-center justify-center'>
                 <Login />
             </div>
             

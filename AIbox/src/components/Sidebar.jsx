@@ -5,10 +5,35 @@ import darklogo from "../assets/dark.jpeg"
 import lightlogo from "../assets/light.jpeg"
 import { assets } from '../assets/assets/assets';
 import { LuImage, LuCoins, LuMoon, LuUser, LuLogOut, LuX } from "react-icons/lu"
+import toast from 'react-hot-toast';
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
-  const { user, chats, selectedChat, theme, setTheme, navigate, setSelectedChat } = useAppContext();
+  const { user, chats, selectedChat, theme, setTheme, navigate, setSelectedChat,
+    createNewChat, axios, setChats, fetchUserChats, setToken, token} = useAppContext();
   const [search, setSearch] = useState('');
+
+    const logout=()=>{
+      localStorage.removeItem('token');
+      setToken(null);
+      toast.success('LoggedOut SuccessFully !')
+    }
+
+    const deleteChat=async (e,chatId)=>{
+      try {
+        e.stopPropagation();
+        const confirm=window.confirm('Are you Sure you want to delete this chat?');
+        if(!confirm) return;
+        const {data} = await axios.post('/api/chat/delete', {chatId}, {headers:{Authorization:token}});
+            if(data.success){
+              setChats(prev=>prev.filter(chat => chat._id!==chatId));
+              await fetchUserChats();
+              toast.success(data.message);
+            }
+      } catch (error) {
+        toast.error(error.message);
+      }
+    }
+
   return ( 
     <div  // Main SideBar
       className={` top-0 left-0 z-50
@@ -21,7 +46,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         alt=''
         className='w-28 mx-auto mt-4 mb-10 rounded-2xl'
       />
-      <button onClick={() => { setIsMenuOpen(false) }} // NEW CHAT BUTTON
+      <button   onClick={() => {setIsMenuOpen(false);createNewChat();}} // NEW CHAT BUTTON
         className="w-full flex items-center justify-center gap-2 text-white bg-linear-to-br from-green-400 to-blue-600 rounded-xl p-4 font-medium transition-all duration-200 hover:scale-105 cursor-pointer"
       >
         <span className="text-xl">+</span>
@@ -76,7 +101,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           {chat.updatedAt}
         </p>
         <img src={assets.bin_icon} className='hidden group-hover:block w-4
-        cursor-pointer not-dark:invert ' alt="" />
+        cursor-pointer not-dark:invert ' alt=""  onClick={e=>toast.promise(deleteChat(e,chat._id), {loading:'deleting.....'})}/>
       </div>
     </div>
   ))
@@ -126,10 +151,10 @@ border border-gray-200 dark:border-white hover:bg-gray-50 dark:hover:bg-[#222] t
           <div className='flex items-center gap-3'>
             <LuUser className='text-xl text-green-600 dark:text-green-400' />
             <p className='font-medium text-gray-800 dark:text-white'>
-              Kashif
+            {user?.name}
             </p>
           </div>
-          <LuLogOut className='text-xl text-green-600 dark:text-green-400 cursor-pointer hover:text-red-400 transition-all' />
+          <LuLogOut onClick={logout} className='text-xl text-green-600 dark:text-green-400 cursor-pointer hover:text-red-400 transition-all' />
         </button>
 
 
