@@ -11,6 +11,8 @@
     "mongoose": "^9.7.0",
     "openai": "^6.43.0",
     "react-router-dom": "^7.17.0",
+    "stripe": "^22.2.2",
+    "svix": "^1.96.0",
     "tailwindcss": "^4.3.0"
   },
   "name": "project",

@@ -1,8 +1,6 @@
 import Transaction from "../models/Transaction.js";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-
 const plans = [
     {
         _id: "basic",
@@ -58,6 +56,8 @@ export const getPlans = async (req, res) => {
     }
 };
 
+const stripe=new Stripe(process.env.STRIPE_SECRET_KEY)
+
 export const purchasePlans = async (req, res) => {
     try {
         const { planId } = req.body;
@@ -73,14 +73,14 @@ export const purchasePlans = async (req, res) => {
         }
 
         const transaction = await Transaction.create({
-            userId,
+            userId: userId,
             planId: plan._id,
             amount: plan.price,
             credits: plan.credits,
             isPaid: false
         });
 
-        const origin = req.headers.origin || "http://localhost:5173";
+        const {origin} = req.headers;
 
         const session = await stripe.checkout.sessions.create({
             payment_method_types: ["card"],

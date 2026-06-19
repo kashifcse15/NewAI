@@ -4,13 +4,15 @@ import User from '../models/User.js';
 
 export const stripeWebHooks = async (req, res) => {
     const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-    const sig = request.headers["stripe-signature"];
+    const sig = req.headers["stripe-signature"];
 
     let event;
     try {
-        event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_KEY)
+        event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+        console.log("Webhook hit");
+console.log("Event Type:", event.type);
     } catch (error) {
-        return res.staus(400).send(`Webhook Error; ${error.message}`);
+        return res.status(400).send(`Webhook Error; ${error.message}`);
     }
 
     try {
@@ -25,6 +27,12 @@ export const stripeWebHooks = async (req, res) => {
 
                 if (appId === 'aibox') {
                     const transaction = await Transaction.findOne({_id:transactionId, isPaid:false});
+                    if (!transaction) {
+                        return res.json({
+                            received: true,
+                            message: "Transaction already processed or not found"
+                        });
+                    }
                     await User.updateOne({_id:transaction.userId}, {$inc:{credits:transaction.credits}});
                     transaction.isPaid=true;
                     await transaction.save();
@@ -38,6 +46,7 @@ export const stripeWebHooks = async (req, res) => {
                 console.log("Unhandled event type", event.type)
             break;
         }
+        return res.status(200).json({ received: true });
        
     } catch (error) {
         console.error("Webhook Processing error : ", error);
