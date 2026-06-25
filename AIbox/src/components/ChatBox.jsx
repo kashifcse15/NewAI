@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useAppContext } from "../context/AppContext";
-import darklogo from "../assets/dark.jpeg";
-import lightlogo from "../assets/light.jpeg";
+import darklogo from "../assets/cognixlight.jpeg";
+import lightlogo from "../assets/cognixdark.jpeg";
 import Message from "./Message";
 import {assets} from '../assets/assets/assets'
 import { LuSend, LuCircleStop } from 'react-icons/lu'
@@ -85,10 +85,16 @@ useEffect(() => { // Scroll to the bottom of the chat container when messages ch
             />
 
             <p
-              className="mt-5 text-4xl sm:text-6xl text-center
+              className="mt-5 text-2xl sm:text-3xl text-center
               text-gray-400 dark:text-white"
             >
-              Ask me anything.
+              Welcome {user?.name} 🚀
+            </p>
+            <p
+              className="mt-5 text-2xl sm:text-3xl text-center
+              text-gray-400 dark:text-white"
+            >
+              How Can i assist ?
             </p>
           </div>
         )}

@@ -1,8 +1,8 @@
 import React from 'react'
 import { useAppContext } from '../context/AppContext';
 import { useState } from 'react';
-import darklogo from "../assets/dark.jpeg"
-import lightlogo from "../assets/light.jpeg"
+import darklogo from "../assets/cognixdark.jpeg"
+import lightlogo from "../assets/cognixlight.jpeg"
 import { assets } from '../assets/assets/assets';
 import { LuImage, LuCoins, LuMoon, LuUser, LuLogOut, LuX } from "react-icons/lu"
 import toast from 'react-hot-toast';
@@ -36,17 +36,29 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
 
   return ( 
     <div  // Main SideBar
-      className={` top-0 left-0 z-50
-  flex flex-col w-72 h-screen p-5 overflow-y-auto bg-white dark:bg-[#111] border border-green-100
+      className={` bg top-0 left-0 z-50
+  flex flex-col w-72 h-screen p-5 overflow-y-auto bg-white dark:bg-[#000000] border border-green-100
   rounded-none md:rounded-3xl shadow-xl shadow-green-100/40 transition-transform duration-300
   ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:m-4 md:h-[95vh]`}
     >
-      <img
-        src={lightlogo}  //logo at top
-        alt=''
-        className='w-28 mx-auto mt-4 mb-10 rounded-2xl'
-      />
-      <button   onClick={() => {setIsMenuOpen(false);createNewChat();}} // NEW CHAT BUTTON
+      <>
+      <>
+  {/* Light mode logo */}
+  <img
+    src={darklogo}
+    alt="Logo"
+    className="w-full mx-auto mt-1 mb-5 block dark:hidden"
+  />
+
+  {/* Dark mode logo */}
+  <img
+    src={lightlogo}
+    alt="Logo"
+    className="w-full mx-auto mt-1 mb-9 hidden dark:block"
+  />
+</>
+</>
+      <button  onClick={() => {setIsMenuOpen(false);createNewChat();}} // NEW CHAT BUTTON
         className="w-full flex items-center justify-center gap-2 text-white bg-linear-to-br from-green-400 to-blue-600 rounded-xl p-4 font-medium transition-all duration-200 hover:scale-105 cursor-pointer"
       >
         <span className="text-xl">+</span>
@@ -56,8 +68,8 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
       <div className="relative"> {/* SEARCH */}
         <input
           type="text" id="search" placeholder=" " onChange={(e) => setSearch(e.target.value)}
-          className="peer w-full h-12 px-4 pr-12 text-sm text-slate-900 dark:text-white
-           bg-white dark:bg-[#181818] border border-slate-300 dark:border-white/10 rounded-lg outline-none
+          className="peer w-full h-12 px-4 pr-12 text-m text-slate-900 dark:text-white
+           bg-white dark:bg-[#000000] border border-slate-300 dark:border-white/10 rounded-lg outline-none
             transition-all duration-200 focus:border-green-500 focus:ring-2 focus:ring-green-200 relative mt-6"
         />
 
@@ -69,7 +81,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
           Search Chats...
         </label>
 
-        <div className="absolute right-3 top-1/2 -translate-y-1/2 mt-3 text-slate-400 dark:text-slate-500">
+        <div className="absolute right-3 top-1/2 -translate-y-1/2 mt-3 text-slate-400 dark:text-slate-900">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -90,7 +102,7 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   chats.filter((chat)=>chat.messages[0] ? chat.messages[0].content.toLowerCase().
   includes(search.toLowerCase()) : chat.name.toLowerCase().
   includes(search.toLowerCase())).map((chat)=>(
-    <div key={chat._id} onClick={() => setSelectedChat(chat)} className='p-2 px-4 dark:bg-[#57317c]/10 border
+    <div key={chat._id} onClick={() => setSelectedChat(chat)} className='p-2 px-4 dark:bg-[#000000] border
     border-gray-300 dark:border-[#80609F]/15 rounded-md cursor-pointer
     flex justify-between group'>
       <div>
@@ -154,7 +166,7 @@ border border-gray-200 dark:border-white hover:bg-gray-50 dark:hover:bg-[#222] t
             {user?.name}
             </p>
           </div>
-          <LuLogOut onClick={logout} className='text-xl text-green-600 dark:text-green-400 cursor-pointer hover:text-red-400 transition-all' />
+          <LuLogOut onClick={logout} className='text-xl text-red-600 dark:text-green-700 cursor-pointer transition-all' />
         </button>
 
 
