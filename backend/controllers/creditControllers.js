@@ -89,7 +89,7 @@ export const purchasePlans = async (req, res) => {
                 {
                     price_data: {
                         currency: "brl",
-                        unit_amount: plan.price * 100,
+                        unit_amount: plan.price * 18,
                         product_data: {
                             name: plan.name
                         }

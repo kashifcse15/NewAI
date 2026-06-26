@@ -13,29 +13,80 @@ export const textMessageController = async (req, res) => { // MESSAGE BY AI
 
         const { chatId, prompt } = req.body;
 
-        const chat = await Chat.findOne({ userId, _id: chatId });
-        chat.messages.push({ role: "user", content: prompt, timestamp: Date.now(), isImage: false });
+        console.log("userId:", userId);
+console.log("chatId:", chatId);
 
-        const { choices } = await openai.chat.completions.create({
-            model: "gemini-3.5-flash",
+
+const chat = await Chat.findOne({ userId, _id: chatId });
+
+console.log("chat:", chat);
+        if (!chat) {
+            return res.json({
+                success: false,
+                message: "Chat not found"
+            });
+        }
+        
+        chat.messages.push({
+            role: "user",
+            content: prompt,
+            timestamp: Date.now(),
+            isImage: false
+        });
+        
+        console.time("AI Response");
+        
+        const response = await openai.chat.completions.create({
+            model: "gemini-2.5-flash",
             messages: [
-
                 {
                     role: "user",
                     content: prompt,
                 },
             ],
         });
-        const reply = { ...choices[0].message, timestamp: Date.now(), isImage: false }
-        res.json({ success: true, reply });
+        
+        console.timeEnd("AI Response");
+        
+        console.log("AI Response:", JSON.stringify(response, null, 2));
+        
+        const { choices } = response;
+
+        if (!choices || choices.length === 0) {
+            return res.json({
+                success: false,
+                message: "No response received from AI"
+            });
+        }
+        
+        const reply = {
+            ...choices[0].message,
+            timestamp: Date.now(),
+            isImage: false
+        };
+        
         chat.messages.push(reply);
         await chat.save();
-
-        await User.updateOne({ _id: userId }, { $inc: { credits: -1 } });
+        
+        await User.updateOne(
+            { _id: userId },
+            { $inc: { credits: -1 } }
+        );
+        
+        res.json({
+            success: true,
+            reply
+        });
 
     }
     catch (error) {
-        res.json({ success: false, message: error.message });
+        console.error("TEXT ERROR:", error);
+        console.error("ERROR RESPONSE:", error.response?.data);
+    
+        res.json({
+            success: false,
+            message: error.message
+        });
     }
 }
 

@@ -49,7 +49,7 @@ const ChatBox = () => {
        }
        finally{
         setPrompt('');
-        setLoading(true);
+        setLoading(false);
        }
 
       }

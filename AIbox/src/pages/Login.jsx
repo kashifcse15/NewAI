@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ai_image12 from "../assets/assets/ai_image12.jpg";
+import leaveslogo from "../assets/leaflogo.jpeg"
 import { useAppContext } from "../context/AppContext";
 import { toast } from "react-hot-toast";
 import { LuUser } from "react-icons/lu";
@@ -52,9 +52,9 @@ export default function Login() {
       {/* LEFT — Image Panel */}
       <div className="relative hidden md:flex w-[48%] overflow-hidden">
         <img
-          src={ai_image12}
+          src={leaveslogo}
           alt="Abstract AI figure"
-          className="w-full h-full object-cover object-top"
+          className="h-50% w-full object-cover object-top"
         />
 
         <div className="absolute inset-0 bg-linear-to-r from-transparent via-transparent to-[#080f0a]" />
@@ -63,7 +63,7 @@ export default function Login() {
         <div className="absolute top-7 left-7 flex items-center gap-2 bg-black/40 backdrop-blur-md border border-green-400/25 rounded-full px-4 py-2">
           <span className="w-2 h-2 rounded-full bg-green-400 shadow-[0_0_8px_#4ade80]" />
           <span className="text-green-100 text-sm font-semibold tracking-wide">
-            NexAuth
+            Created by Kashif
           </span>
         </div>
       </div>

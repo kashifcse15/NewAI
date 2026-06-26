@@ -6,35 +6,48 @@ import lightlogo from "../assets/cognixlight.jpeg"
 import { assets } from '../assets/assets/assets';
 import { LuImage, LuCoins, LuMoon, LuUser, LuLogOut, LuX } from "react-icons/lu"
 import toast from 'react-hot-toast';
+import moment from 'moment'
 
 const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   const { user, chats, selectedChat, theme, setTheme, navigate, setSelectedChat,
-    createNewChat, axios, setChats, fetchUserChats, setToken, token} = useAppContext();
+    createNewChat, axios, setChats, fetchUserChats, setToken, token } = useAppContext();
   const [search, setSearch] = useState('');
 
-    const logout=()=>{
-      localStorage.removeItem('token');
-      setToken(null);
-      toast.success('LoggedOut SuccessFully !')
-    }
+  const logout = () => {
+    localStorage.removeItem('token');
+    setToken(null);
+    toast.success('LoggedOut SuccessFully !')
+  }
 
-    const deleteChat=async (e,chatId)=>{
-      try {
-        e.stopPropagation();
-        const confirm=window.confirm('Are you Sure you want to delete this chat?');
-        if(!confirm) return;
-        const {data} = await axios.post('/api/chat/delete', {chatId}, {headers:{Authorization:token}});
-            if(data.success){
-              setChats(prev=>prev.filter(chat => chat._id!==chatId));
-              await fetchUserChats();
-              toast.success(data.message);
-            }
-      } catch (error) {
-        toast.error(error.message);
+  const deleteChat = async (e, chatId) => {
+    e.stopPropagation();
+
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this chat?"
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      const { data } = await axios.post(
+        "/api/chat/delete",
+        { chatId },
+        { headers: { Authorization: token } }
+      );
+
+      if (data.success) {
+        setChats((prev) => prev.filter((chat) => chat._id !== chatId));
+        await fetchUserChats();
+        toast.success("Chat deleted");
+      } else {
+        toast.error(data.message);
       }
+    } catch (error) {
+      toast.error(error.message);
     }
+  };
 
-  return ( 
+  return (
     <div  // Main SideBar
       className={` bg top-0 left-0 z-50
   flex flex-col w-72 h-screen p-5 overflow-y-auto bg-white dark:bg-[#000000] border border-green-100
@@ -42,23 +55,23 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:m-4 md:h-[95vh]`}
     >
       <>
-      <>
-  {/* Light mode logo */}
-  <img
-    src={darklogo}
-    alt="Logo"
-    className="w-full mx-auto mt-1 mb-5 block dark:hidden"
-  />
+        <>
+          {/* Light mode logo */}
+          <img
+            src={darklogo}
+            alt="Logo"
+            className="w-full h-28 mx-auto mt-1 mb-5 block dark:hidden"
+          />
 
-  {/* Dark mode logo */}
-  <img
-    src={lightlogo}
-    alt="Logo"
-    className="w-full mx-auto mt-1 mb-9 hidden dark:block"
-  />
-</>
-</>
-      <button  onClick={() => {setIsMenuOpen(false);createNewChat();}} // NEW CHAT BUTTON
+          {/* Dark mode logo */}
+          <img
+            src={lightlogo}
+            alt="Logo"
+            className="w-full h-26 mx-auto mt-1 mb-9 hidden dark:block"
+          />
+        </>
+      </>
+      <button onClick={() => { setIsMenuOpen(false); createNewChat(); }} // NEW CHAT BUTTON
         className="w-full flex items-center justify-center gap-2 text-white bg-linear-to-br from-green-400 to-blue-600 rounded-xl p-4 font-medium transition-all duration-200 hover:scale-105 cursor-pointer"
       >
         <span className="text-xl">+</span>
@@ -96,31 +109,61 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
         </div>
       </div>
 
-      {chats.length>0 && <p className='mt-4 text-sm'>Recent Chats</p>} 
-<div>
-{
-  chats.filter((chat)=>chat.messages[0] ? chat.messages[0].content.toLowerCase().
-  includes(search.toLowerCase()) : chat.name.toLowerCase().
-  includes(search.toLowerCase())).map((chat)=>(
-    <div key={chat._id} onClick={() => setSelectedChat(chat)} className='p-2 px-4 dark:bg-[#000000] border
-    border-gray-300 dark:border-[#80609F]/15 rounded-md cursor-pointer
-    flex justify-between group'>
+      {chats.length > 0 && (
+        <p className="mt-4 mb-3 text-sm font-medium text-gray-500 dark:text-gray-400">
+          Recent Chats
+        </p>
+      )}
+
       <div>
-        <p className='truncate w-full'>
-          {chat.messages.length > 0 ? chat.messages[0].content.slice(0,32) : chat.name}
-        </p>
-        <p className='text-xs text-gray-500 dark:text-[#B1A6C0]'>
-          {chat.updatedAt}
-        </p>
-        <img src={assets.bin_icon} className='hidden group-hover:block w-4
-        cursor-pointer not-dark:invert ' alt=""  onClick={e=>toast.promise(deleteChat(e,chat._id), {loading:'deleting.....'})}/>
+        {chats
+          .filter((chat) =>
+            chat.messages[0]
+              ? chat.messages[0].content
+                .toLowerCase()
+                .includes(search.toLowerCase())
+              : chat.name.toLowerCase().includes(search.toLowerCase())
+          )
+          .map((chat) => (
+            <div
+              key={chat._id}
+              onClick={() => {
+                setSelectedChat(chat);
+                navigate("/");
+                setIsMenuOpen(false); // optional, closes sidebar on mobile
+              }}
+              className={`p-3 mb-3 rounded-xl border cursor-pointer transition-all duration-200
+        flex items-center justify-between group
+        ${selectedChat?._id === chat._id
+                  ? "bg-green-100 dark:bg-[#1B2B22] border-green-500 shadow-md"
+                  : "bg-white dark:bg-[#0F0F0F] border-gray-300 dark:border-[#2A2A2A] hover:bg-gray-100 dark:hover:bg-[#181818]"
+                }`}
+            >
+              {/* Left */}
+              <div className="flex-1 min-w-0">
+                <p className="truncate text-sm font-medium text-gray-800 dark:text-white">
+                  {chat.messages.length > 0
+                    ? chat.messages[0].content
+                    : chat.name}
+                </p>
+
+                <p className="text-xs mt-1 text-gray-500 dark:text-gray-400">
+                  {moment(chat.updatedAt).format("DD MMM YYYY, hh:mm A")}
+                </p>
+              </div>
+
+              {/* Delete Button */}
+              <img
+                src={assets.bin_icon}
+                alt="Delete"
+                onClick={(e) => deleteChat(e, chat._id)}
+                className="w-4 h-4 ml-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-pointer not-dark:invert shrink-0"
+              />
+            </div>
+          ))}
       </div>
-    </div>
-  ))
-} 
-</div>
-{/* COMMUNITY */}
-      <div className='mt-auto flex flex-col gap-3'> 
+      {/* COMMUNITY */}
+      <div className='mt-auto flex flex-col gap-3'>
 
         <button onClick={() => { navigate('/community'); setIsMenuOpen(false) }} className='flex items-center gap-3 p-3 rounded-xl 
 bg-white dark:bg-[#181818]  border border-gray-200 dark:border-white/10 text-gray-800 dark:text-white
@@ -131,7 +174,7 @@ bg-white dark:bg-[#181818]  border border-gray-200 dark:border-white/10 text-gra
             <p className='text-sm text-gray-500'>Explore AI creations</p>
           </div>
         </button>
-{/* CREDITS */}
+        {/* CREDITS */}
         <button onClick={() => { navigate('/credits'); setIsMenuOpen(false) }} className='mt-auto flex items-center gap-3 p-3 rounded-xl
  bg-white dark:bg-[#181818] border border-gray-200 dark:border-white/10
   hover:bg-gray-50 dark:hover:bg-[#222]  hover:shadow-md transition-all duration-300 cursor-pointer'>
@@ -141,7 +184,7 @@ bg-white dark:bg-[#181818]  border border-gray-200 dark:border-white/10 text-gra
             <p className='text-sm text-gray-500'>Purchase Credits</p>
           </div>
         </button>
-{/* DARK MODE */}
+        {/* DARK MODE */}
         <div className='flex items-center justify-between p-3 mt-4 rounded-xl border border-gray-200 dark:border-white/10
 bg-white dark:bg-[#181818] text-gray-700 dark:text-white hover:shadow-md transition-all duration-300'>
           <div className='flex items-center gap-2 text-sm font-medium '>
@@ -157,13 +200,13 @@ bg-white dark:bg-[#181818] text-gray-700 dark:text-white hover:shadow-md transit
             <span className='absolute left-1 top-1 w-4 h-4 bg-white rounded-full transition-transform duration-300 peer-checked:translate-x-5'></span>
           </label>
         </div>
-{/* LOGOUT & USERNAME */}
+        {/* LOGOUT & USERNAME */}
         <button className='mt-auto w-full flex items-center justify-between px-4 py-3 rounded-2xl bg-white dark:bg-[#181818] 
 border border-gray-200 dark:border-white hover:bg-gray-50 dark:hover:bg-[#222] transition-all duration-300 '>
           <div className='flex items-center gap-3'>
             <LuUser className='text-xl text-green-600 dark:text-green-400' />
             <p className='font-medium text-gray-800 dark:text-white'>
-            {user?.name}
+              {user?.name}
             </p>
           </div>
           <LuLogOut onClick={logout} className='text-xl text-red-600 dark:text-green-700 cursor-pointer transition-all' />
@@ -171,7 +214,7 @@ border border-gray-200 dark:border-white hover:bg-gray-50 dark:hover:bg-[#222] t
 
 
       </div>
-{/* X BUTTON FOR MOBILE      */}
+      {/* X BUTTON FOR MOBILE      */}
       <button onClick={() => setIsMenuOpen(false)} className='md:hidden absolute top-3 right-3 w-5 h-5 cursor-pointer'>
         <LuX className='text-3xl text-red-500' />
       </button>
