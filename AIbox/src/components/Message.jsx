@@ -13,7 +13,7 @@ const Message = ({ message }) => {
     <div>
       {message.role === "user" ? (
         <div className='flex items-start justify-end my-4 gap-2'>
-          <div className='flex flex-col gap-2 p-2 px-4 bg-slate-50 dark:bg-[#0F1A14] border border-[#1F4D36] rounded-md max-w-xl'>
+          <div className='flex flex-col gap-2 p-2 px-4 bg-slate-50 dark:bg-[#0F1A14] border border-[#1F4D36] rounded-md max-w-[82%] md:max-w-xl'>
             <p className='text-sm text-black dark:text-green-100'>
               {message.content}
             </p>
@@ -23,13 +23,13 @@ const Message = ({ message }) => {
             </span>
           </div>
 
-          <LuUser className='w-8 h-8 p-1 rounded-full bg-green-200 dark:bg-[#1F4D36] text-black dark:text-green-300' />
+          <LuUser className='w-7 h-7 md:w-8 md:h-8 p-1 rounded-full bg-green-200 dark:bg-[#1F4D36] text-black dark:text-green-300' />
         </div>
       ) : (
         <div className='flex items-start gap-2 my-4'>
-          <LuBot className='w-8 h-8 p-1 rounded-full bg-green-200 dark:bg-[#1F4D36] text-black dark:text-green-300 shrink-0' />
+          <LuBot className='w-7 h-7 md:w-8 md:h-8 p-1 rounded-full bg-green-200 dark:bg-[#1F4D36] text-black dark:text-green-300 shrink-0' />
 
-          <div className='inline-flex flex-col gap-2 p-2 px-4 max-w-2xl bg-green-100/20 dark:bg-[#13231B] border border-[#1F4D36] rounded-md'>
+          <div className='inline-flex flex-col gap-2 p-2 px-4 max-w-[82%] md:max-w-2xl bg-green-100/20 dark:bg-[#13231B] border border-[#1F4D36] rounded-md'>
             {message.isImage ? (
               <img
                 src={message.content}

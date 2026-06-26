@@ -75,9 +75,8 @@ useEffect(() => { // Scroll to the bottom of the chat container when messages ch
       <div ref={containerRef} className="flex-1 mb-5 overflow-y-scroll"> {/* CHAT MESSAGES */}
         {messages.length === 0 && (
           <div
-            className="h-full flex flex-col items-center justify-center
-  m-5 md:m-10 xl:mx-30 max-md:mt-14 2xl:pr-40"
-          >
+  className="h-full flex flex-col items-center justify-center px-4"
+>
             <img
               src={theme === "dark" ? darklogo : lightlogo}
               alt="Logo"

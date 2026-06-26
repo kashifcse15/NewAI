@@ -48,11 +48,12 @@ const Sidebar = ({ isMenuOpen, setIsMenuOpen }) => {
   };
 
   return (
-    <div  // Main SideBar
-      className={` bg top-0 left-0 z-50
-  flex flex-col w-72 h-screen p-5 overflow-y-auto bg-white dark:bg-[#000000] border border-green-100
-  rounded-none md:rounded-3xl shadow-xl shadow-green-100/40 transition-transform duration-300
-  ${isMenuOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:m-4 md:h-[95vh]`}
+    <div
+      className={`fixed md:relative top-0 left-0 z-50 flex flex-col w-[85vw] max-w-[320px] 
+        md:w-72 h-screen md:h-[95vh] p-5 overflow-y-auto bg-white dark:bg-[#000000] border border-green-100 
+        rounded-none md:rounded-3xl shadow-xl shadow-green-100/40 transition-transform duration-300
+${isMenuOpen ? "translate-x-0" : "-translate-x-full"} md:translate-x-0 md:m-4`
+      }
     >
       <>
         <>
